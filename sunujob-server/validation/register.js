@@ -11,7 +11,7 @@ module.exports = function validateRegister(data) {
     data.passwordConfirm = !isEmpty(data.passwordConfirm) ? data.passwordConfirm : "";
 
     if(Validator.isEmpty(data.nom)) {
-        errors.nom = "Veuillez rempli le champ nom!";
+        errors.nom = "Veuillez remplir le champ nom!";
     }
 
     if(Validator.isEmpty(data.prenom)) {

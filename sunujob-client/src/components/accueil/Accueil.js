@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
-import { Navbar, Nav, Button, Form, FormControl } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { LinkContainer } from "react-router-bootstrap";
+import Register from "../auth/Register";
 
 class Accueil extends Component {
     onLogoutClick = e => {
@@ -13,16 +11,20 @@ class Accueil extends Component {
     };
 
     render() {
-        const { user } = this.props.auth;
+        // const { user } = this.props.auth;  {user.nom.split(" ")[0]}
+        const user = JSON.parse(localStorage.getItem('document'));
 
         return (
             <div /*style={{ height: "75vh" }} className="container valign-wrapper"*/>
-                
-                <div className="row">
-                    <div className="col s12 center-align">
-                        <h5>
-                            {user.nom.split(" ")[0]}
-                        </h5>
+
+                <div className="col s12 center-align">
+                    <div className="col s12 center-align"><br /> <br />
+                        <h4>
+                            <th className="col s12 center-align">
+                                <td>{user.prenom}</td>
+                                <td>{user.nom}</td>
+                            </th>
+                        </h4>
                         <button
                             style={{
                                 borderRadius: "3px",

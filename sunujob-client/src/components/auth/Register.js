@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { registerUser } from "../../actions/authActions";
 import classnames from "classnames";
-import { FaUserAlt, FaUserLock, FaUserCircle } from 'react-icons/fa';
-import { InputGroup, InputGroupText, InputGroupAddon, Input } from 'reactstrap';
 
+ var documentData;
 
 class Register extends Component {
     constructor() {
@@ -33,6 +32,7 @@ class Register extends Component {
                 errors: nextProps.errors
             });
         }
+        this.props.history.push("/accueil");
     }
 
     onChange = e => {
@@ -50,7 +50,31 @@ class Register extends Component {
             passwordConfirm: this.state.passwordConfirm
         };
         this.props.registerUser(newUser, this.props.history);
+        localStorage.setItem('document', JSON.stringify(this.state));
+        window.location.href = '/accueil';
+        window.location.href= "/profil";
     };
+    componentDidMount() {
+        this.documentData = JSON.parse(localStorage.getItem('document'));
+
+
+        if (localStorage.getItem('document')) {
+            this.setState({
+                nom: this.documentData.nom,
+                prenom: this.documentData.prenom,
+                email: this.documentData.email,
+                password: this.documentData.password
+            })
+            console.log(this.documentData);
+        } else {
+            this.setState({
+                nom: "",
+                prenom: "",
+                email: "",
+                password: ""
+            })
+        }
+    }
 
     render() {
         const { errors } = this.state;
@@ -158,6 +182,17 @@ class Register extends Component {
     }
 }
 
+class Datas extends Component {
+    render() {
+        return (
+            <div>
+                {documentData}
+                {console.log(documentData)};
+            </div>
+        );
+    }
+}
+
 Register.propTypes = {
     registerUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
@@ -172,4 +207,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { registerUser }
-)(withRouter(Register));
+)(withRouter(Register, Datas));

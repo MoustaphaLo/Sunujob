@@ -12,7 +12,7 @@ class Navigationbar extends Component {
                 <Nav.Link href="/accueil" style={{
                   marginRight: "2rem",
                 }} >Home</Nav.Link>
-                <Nav.Link href="/profil" style={{
+                <Nav.Link href="/profil/" style={{
                   marginRight: "2rem"
                 }}>Profil</Nav.Link>
                 <Nav.Link href="/Messages" style={{

@@ -8,6 +8,7 @@ const validateRegister = require('../../validation/register');
 const validateLogin = require('../../validation/login');
 
 const User = require('../../models/User');
+const { Router } = require('express');
 
 router.post('/register', (req, res) => {
     const { errors, isValid } = validateRegister(req.body);
@@ -83,5 +84,37 @@ router.post('/login', (req, res) => {
     });
 });
 
+/*router.get('/profil/:id', (req, res, next) =>{
+    User.findById(req.params.id, (error, data) => {
+        if (error) {
+            return next(error)
+        } else {
+            return res.json(data);
+        }
+    })
+});*/
+
+router.get('/profil/:id', (req, res) => {
+    User.findOne({_id:req.params.id}, (error, data) => {
+        if (error) {
+            return next(error)
+        } else {
+            return res.json(data);
+        }
+    })
+        
+    })
+
+router.put('/update-profil/:id', (req, res, next) => {
+    User.findByIdAndUpdate(req.params.id, {
+        $set: req.body
+    }, (error, data) => {
+        if (error) {
+            return next(error);
+        } else {
+            res.json(data);
+        }
+    })
+})
 
 module.exports = router;

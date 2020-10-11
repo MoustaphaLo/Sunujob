@@ -9,9 +9,12 @@ import {
 } from "./types";
 
 export const registerUser = (userData, history) => dispatch => {
+
     axios
         .post("/api/users/register", userData)
-        .then(res => history.push("/login"))
+        .then(res => {
+            history.push("/login", res.data);
+        })
         .catch(err => dispatch({
             type: GET_ERRORS,
             payload: err.response.data
@@ -23,17 +26,20 @@ export const loginUser = userData => dispatch => {
     axios.post("/api/users/login", userData)
         .then(res => {
             
-            const { token } = res.data;
+            const {token}  = res.data;
             localStorage.setItem("jwtToken", token);
             setAuthToken(token);
+            console.log(token)
             const decoded = jwt_decode(token);
             dispatch(setCurrentUser(decoded));
+            console.log(decoded);
         })
         .catch(err => dispatch({
             type: GET_ERRORS,
             payload: err.response.data
         })
     );
+    
 };
 
 export const setCurrentUser = decoded => {
@@ -42,6 +48,7 @@ export const setCurrentUser = decoded => {
         payload: decoded
     };
 };
+
 
 export const setUserLoading = () => {
     return {

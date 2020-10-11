@@ -22,7 +22,7 @@ mongoose.connect(
         useNewUrlParser: true
     }
 )
-.then(() => console.log("Connexion au mongodb réussi!"))
+.then(() => console.log("Connexion à mongodb réussie!"))
 .catch(err => console.log(err));
 
 app.use(passport.initialize());
