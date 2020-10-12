@@ -6,6 +6,12 @@ const keys = require('../../config/keys');
 
 const validateRegister = require('../../validation/register');
 const validateLogin = require('../../validation/login');
+const multer = require("multer");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const GridFsStorage = require("multer-gridfs-storage");
+const Grid = require("gridfs-stream");
+const crypto = require("crypto");
 
 const User = require('../../models/User');
 const { Router } = require('express');
@@ -92,7 +98,7 @@ router.post('/login', (req, res) => {
             return res.json(data);
         }
     })
-});*/
+});
 
 router.get('/profil/:id', (req, res) => {
     User.findOne({_id:req.params.id}, (error, data) => {
@@ -104,6 +110,37 @@ router.get('/profil/:id', (req, res) => {
     })
         
     })
+
+router.post('/edit-profil', function(req, res, next) {
+    User.update({_id: req.user._id}, {$set: req.body}, {
+        nom: req.body.nom,
+        prenom: req.body.prenom,
+        email: req.body.email,
+        password: req.body.password
+
+    }, function(err) {
+        if (err) console.log(err);
+        res.render('profil', {
+            user: req.user
+        })
+    })
+
+})*/
+// https://github.com/TheLordA/Instagram-Web-App-MERN-Stack-Clone/blob/master/server/routes/user.js
+router.put("/update-profil-picture", (req, res) => {
+    User.findByIdAndUpdate(
+        req.user._id,
+        { $set: { photo: req.body.photo, photoType: req.body.photoType}},
+        { new: true },
+        (err, result) => {
+            if (err) {
+                return res.status(422).json({ error: "Erreur, réessayez!"});
+            }
+            res.json(result);
+        }
+    );
+});
+
 
 router.put('/update-profil/:id', (req, res, next) => {
     User.findByIdAndUpdate(req.params.id, {
